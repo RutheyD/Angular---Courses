@@ -1,0 +1,782 @@
+<!-- <h2>Courses List: </h2>
+ <mat-accordion>
+@if(allCourses$){
+
+    @for(currentCourse of (allCourses$|async);track $index){
+    <li>Title:{{currentCourse.title}} Description:{{currentCourse.description}} Teacher:{{currentCourse.teacherId}}
+
+        @for(lesson of currentCourse.lessons;track $index){
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+   {{lesson.title}} 
+</mat-panel-title>
+<mat-panel-description>
+    {{ currentCourse.description }} | מורה: {{ currentCourse.teacherId }}
+</mat-panel-description>
+</mat-expansion-panel-header>
+
+<div class="course-actions">
+<button mat-button color="primary" (click)="setIsUpdate(currentCourse)">עדכן</button>
+<button mat-button color="warn" (click)="deleteCourse(currentCourse.id)">מחק</button>
+<button mat-button color="accent" (click)="setIsAddLesson(currentCourse.id)">הוסף שיעור</button>
+</div>
+   Content:{{lesson.content}}
+  <button (click)="setIsUpdateLesson(lesson)">Update Lesson</button>
+  <button (click)="deleteLesson(currentCourse.id,lesson.id)">Delete Lesson</button>
+  @if(isUpdateLesson&&idCurrentLesson==lesson.id){
+      <form [formGroup]="lessonForm" (ngSubmit)="onSubmitLesonUpdate()">
+        <label for="title">title</label>
+        <input id="title" formControlName="title" required>
+        @if (course['title']&&course['title'].errors &&course['title'].touched) {
+        @if(course['title'].errors['required']) {
+        <div>Title is required</div>
+        }
+        @if(course["title"].errors["minlength"]) {
+        <div>Title must be at least 4 characters</div>
+        }
+        @if(course["title"].errors["maxlength"]) {
+        <div>Title must be at most 8 characters</div>
+        }
+        }
+    
+        <label for="content">content:</label>
+        <input id="content" formControlName="content" required >
+        @if (course['content']&&course['content'].errors &&course['content'].touched) {
+        @if(course['content'].errors["required"]) {
+        <div>Description is required</div>
+        }
+        @if(course["content"].errors["minlength"]) {
+        <div>Description must be at least 15 characters</div>
+        }
+        }
+        <button type="submit" [disabled]="lessonForm.invalid">Submit</button>
+
+      </form>
+  }
+}
+    </li>
+    <button (click)="deleteCourse(currentCourse.id)">Delete</button>
+    <button (click)="setIsUpdate(currentCourse)">Update</button>
+    <button (click)="setIsAddLesson(currentCourse.id)">Add Lesson</button>
+     @if(isAddLesson&&idCurrentCourse===currentCourse.id){
+        <form [formGroup]="lessonForm" (ngSubmit)="onSubmitAddLesson()">
+            <label for="title">title</label>
+            <input id="title" formControlName="title" required>
+            @if (course['title']&&course['title'].errors &&course['title'].touched) {
+            @if(course['title'].errors['required']) {
+            <div>Title is required</div>
+            }
+            @if(course["title"].errors["minlength"]) {
+            <div>Title must be at least 4 characters</div>
+            }
+            @if(course["title"].errors["maxlength"]) {
+            <div>Title must be at most 8 characters</div>
+            }
+            }
+        
+            <label for="content">content:</label>
+            <input id="content" formControlName="content" required >
+            @if (course['content']&&course['content'].errors &&course['content'].touched) {
+            @if(course['content'].errors["required"]) {
+            <div>Description is required</div>
+            }
+            @if(course["content"].errors["minlength"]) {
+            <div>Description must be at least 15 characters</div>
+            }
+            }
+            <button type="submit" [disabled]="lessonForm.invalid">Submit</button>
+
+        </form>
+     }
+
+    @if(isUpdate &&currentCourse.id==idCurrentCourse){
+    <form [formGroup]="courseForm" (ngSubmit)="onSubmitUpdateCourse()">
+    <label for="title">title</label>
+    <input id="title" formControlName="title" required>
+    @if (course['title']&&course['title'].errors &&course['title'].touched) {
+            @if(course['title'].errors["required"]) {
+                <div>Title is required</div>
+            }
+            @if(course["title"].errors["minlength"]) {
+            <div>Title must be at least 4 characters</div>
+            }
+            @if(course["title"].errors["maxlength"]) {
+            <div>Title must be at most 8 characters</div>
+            
+        }
+    }
+
+    <label for="description">description:</label>
+    <input id="description" formControlName="description" required>
+    @if (course['description']&&course['description'].errors &&course['description'].touched) {
+        @if(course['description'].errors["required"]) {
+            <div>Description is required</div>
+        }
+        @if(course["description"].errors["minlength"]) {
+        <div>Description must be at least 15 characters</div>
+        }
+    }
+    <button type="submit" [disabled]="courseForm.invalid">Submit</button>
+        
+    </form>
+
+    }
+    }
+
+}
+@else {
+<div>no courses to show </div>
+}
+
+<button (click)="setIsAddCourse()">Add Course</button>
+@if(isAddCourse){
+<form [formGroup]="courseForm" (ngSubmit)="onSubmitAddCourse()">
+    <label for="title">title</label>
+    <input id="title" formControlName="title" required>
+    @if (course['title']&&course['title'].errors &&course['title'].touched) {
+            @if(course['title'].errors["required"]) {
+                <div>Title is required</div>
+            }
+            @if(course["title"].errors["minlength"]) {
+            <div>Title must be at least 4 characters</div>
+            }
+            @if(course["title"].errors["maxlength"]) {
+            <div>Title must be at most 8 characters</div>
+            
+        }
+    }
+
+    <label for="description">description:</label>
+    <input id="description" formControlName="description" required>
+    @if (course['description']&&course['description'].errors &&course['description'].touched) {
+        @if(course['description'].errors["required"]) {
+            <div>Description is required</div>
+        }
+        @if(course["description"].errors["minlength"]) {
+        <div>Description must be at least 15 characters</div>
+        }
+    }
+    <button type="submit" [disabled]="courseForm.invalid">Submit</button>
+</form>
+}
+===================
+<h2>רשימת קורסים:</h2>
+<mat-accordion>
+  @if (allCourses$ | async as courses) {
+    @for (let currentCourse of courses; track currentCourse.id) {
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ currentCourse.title }}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{ currentCourse.description }} | מורה: {{ currentCourse.teacherId }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="course-actions">
+          <button mat-button color="primary" (click)="setIsUpdate(currentCourse)">עדכן</button>
+          <button mat-button color="warn" (click)="deleteCourse(currentCourse.id)">מחק</button>
+          <button mat-button color="accent" (click)="setIsAddLesson(currentCourse.id)">הוסף שיעור</button>
+        </div>
+
+        @if (currentCourse.lessons.length > 0) {
+          <mat-list>
+            @for (let lesson of currentCourse.lessons; track lesson.id) {
+              <mat-list-item>
+                <div class="lesson-details">
+                  <h4>{{ lesson.title }}</h4>
+                  <p>{{ lesson.content }}</p>
+                </div>
+                <button mat-mini-button color="primary" (click)="setIsUpdateLesson(lesson)">עדכן שיעור</button>
+                <button mat-mini-button color="warn" (click)="deleteLesson(currentCourse.id, lesson.id)">מחק שיעור</button>
+              </mat-list-item>
+            }
+          </mat-list>
+        } @else {
+          <p>אין שיעורים זמינים.</p>
+        }
+
+        @if (isAddLesson && idCurrentCourse === currentCourse.id) {
+          <div class="form-container">
+            <form [formGroup]="lessonForm" (ngSubmit)="onSubmitAddLesson()">
+              <mat-form-field>
+                <mat-label>כותרת</mat-label>
+                <input matInput formControlName="title" required />
+                <mat-error *ngIf="lessonForm.get('title')?.hasError('required')">כותרת נדרשת</mat-error>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>תוכן</mat-label>
+                <textarea matInput formControlName="content" required></textarea>
+                <mat-error *ngIf="lessonForm.get('content')?.hasError('required')">תוכן נדרש</mat-error>
+              </mat-form-field>
+
+              <button mat-raised-button color="primary" type="submit" [disabled]="lessonForm.invalid">שלח</button>
+            </form>
+          </div>
+        }
+      </mat-expansion-panel>
+    }
+  } @else {
+    <div>אין קורסים להצגה</div>
+  }
+</mat-accordion>
+
+<button mat-raised-button color="primary" (click)="setIsAddCourse()">הוסף קורס</button>
+
+@if (isAddCourse) {
+  <div class="form-container">
+    <form [formGroup]="courseForm" (ngSubmit)="onSubmitAddCourse()">
+      <mat-form-field>
+        <mat-label>כותרת</mat-label>
+        <input matInput formControlName="title" required />
+        <mat-error *ngIf="courseForm.get('title')?.hasError('required')">כותרת נדרשת</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>תיאור</mat-label>
+        <textarea matInput formControlName="description" required></textarea>
+        <mat-error *ngIf="courseForm.get('description')?.hasError('required')">תיאור נדרש</mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="courseForm.invalid">שלח</button>
+    </form>
+  </div>
+}
+ -->
+
+ <!-- <h2>רשימת קורסים:</h2>
+ <mat-accordion>
+   @if (allCourses$ ) {
+     @for (currentCourse of (allCourses$|async);track $index) {
+       <mat-expansion-panel>
+         <mat-expansion-panel-header>
+           <mat-panel-title>
+             {{ currentCourse.title }}
+           </mat-panel-title>
+           <mat-panel-description>
+             {{ currentCourse.description }} | מורה: {{ currentCourse.teacherId }}
+           </mat-panel-description>
+         </mat-expansion-panel-header>
+ 
+         <div class="course-actions">
+           <button mat-button color="primary" (click)="setIsUpdate(currentCourse)">עדכן</button>
+           <button mat-button color="warn" (click)="deleteCourse(currentCourse.id)">מחק</button>
+           <button mat-button color="accent" (click)="setIsAddLesson(currentCourse.id)">הוסף שיעור</button>
+         </div>
+ 
+         @if (currentCourse.lessons) {
+           <mat-list>
+            @for(lesson of currentCourse.lessons;track $index) {
+               <mat-list-item>
+                 <div class="lesson-details">
+                   <h4>{{ lesson.title }}</h4>
+                   <p>{{ lesson.content }}</p>
+                 </div>
+                 <button mat-mini-button color="primary" (click)="setIsUpdateLesson(lesson)">עדכן שיעור</button>
+                 <button mat-mini-button color="warn" (click)="deleteLesson(currentCourse.id, lesson.id)">מחק שיעור</button>
+               </mat-list-item>
+             }
+           </mat-list>
+         } @else {
+           <p>אין שיעורים זמינים.</p>
+         }
+ 
+         @if (isAddLesson && idCurrentCourse === currentCourse.id) {
+           <div class="form-container">
+             <form [formGroup]="lessonForm" (ngSubmit)="onSubmitAddLesson()">
+               <mat-form-field>
+                 <mat-label>כותרת</mat-label>
+                 <input matInput formControlName="title" required />
+                 <mat-error *ngIf="lessonForm.get('title')?.hasError('required')">כותרת נדרשת</mat-error>
+               </mat-form-field>
+ 
+               <mat-form-field>
+                 <mat-label>תוכן</mat-label>
+                 <textarea matInput formControlName="content" required></textarea>
+                 <mat-error *ngIf="lessonForm.get('content')?.hasError('required')">תוכן נדרש</mat-error>
+               </mat-form-field>
+ 
+               <button mat-raised-button color="primary" type="submit" [disabled]="lessonForm.invalid">שלח</button>
+             </form>
+           </div>
+         }
+       </mat-expansion-panel>
+     }
+   } @else {
+     <div>אין קורסים להצגה</div>
+   }
+ </mat-accordion>
+ 
+ <button mat-raised-button color="primary" (click)="setIsAddCourse()">הוסף קורס</button>
+ 
+ @if (isAddCourse) {
+   <div class="form-container">
+     <form [formGroup]="courseForm" (ngSubmit)="onSubmitAddCourse()">
+       <mat-form-field>
+         <mat-label>כותרת</mat-label>
+         <input matInput formControlName="title" required />
+         <mat-error *ngIf="courseForm.get('title')?.hasError('required')">כותרת נדרשת</mat-error>
+       </mat-form-field>
+ 
+       <mat-form-field>
+         <mat-label>תיאור</mat-label>
+         <textarea matInput formControlName="description" required></textarea>
+         <mat-error *ngIf="courseForm.get('description')?.hasError('required')">תיאור נדרש</mat-error>
+       </mat-form-field>
+ 
+       <button mat-raised-button color="primary" type="submit" [disabled]="courseForm.invalid">שלח</button>
+     </form>
+   </div>
+ }
+  -->
+
+<!-- 
+  <div class="container">
+    <h2>רשימת קורסים:</h2>
+    <mat-accordion>
+      @if (allCourses$) {
+        @for (currentCourse of (allCourses$|async);track $index) {
+            
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ currentCourse.title }}
+              </mat-panel-title>
+              <mat-panel-description>
+                {{ currentCourse.description }} | מורה: {{ currentCourse.teacherId }}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+  
+            <div class="course-actions">
+              <button mat-button color="primary" (click)="setIsUpdate(currentCourse)">עדכן</button>
+              <button mat-button color="warn" (click)="deleteCourse(currentCourse.id)">מחק</button>
+              <button mat-button color="accent" (click)="setIsAddLesson(currentCourse.id)">הוסף שיעור</button>
+            </div>
+  
+            @if (currentCourse.lessons) {
+              <mat-list>
+                @for(lesson of currentCourse.lessons;track $index) {
+                  <mat-list-item>
+                    <div class="lesson-details">
+                      <h4>{{ lesson.title }}</h4>
+                      <p>{{ lesson.content }}</p>
+                    </div>
+                    <button mat-mini-button color="primary" (click)="setIsUpdateLesson(lesson)">עדכן שיעור</button>
+                    <button mat-mini-button color="warn" (click)="deleteLesson(currentCourse.id, lesson.id)">מחק שיעור</button>
+                  </mat-list-item>
+                }
+              </mat-list>
+            } @else {
+              <p>אין שיעורים זמינים.</p>
+            }
+  
+            @if (isAddLesson && idCurrentCourse === currentCourse.id) {
+              <div class="form-container">
+                <form [formGroup]="lessonForm" (ngSubmit)="onSubmitAddLesson()">
+                  <mat-form-field appearance="outline">
+                    <mat-label>כותרת</mat-label>
+                    <input matInput formControlName="title" required />
+                    <mat-error *ngIf="lessonForm.get('title')?.hasError('required')">כותרת נדרשת</mat-error>
+                  </mat-form-field>
+  
+                  <mat-form-field appearance="outline">
+                    <mat-label>תוכן</mat-label>
+                    <textarea matInput formControlName="content" required></textarea>
+                    <mat-error *ngIf="lessonForm.get('content')?.hasError('required')">תוכן נדרש</mat-error>
+                  </mat-form-field>
+  
+                  <button mat-raised-button color="primary" type="submit" [disabled]="lessonForm.invalid">שלח</button>
+                </form>
+              </div>
+            }
+          </mat-expansion-panel>
+        }
+      } @else {
+        <div>אין קורסים להצגה</div>
+      }
+    </mat-accordion>
+  
+    <button mat-raised-button color="primary" (click)="setIsAddCourse()">הוסף קורס</button>
+  
+    @if (isAddCourse) {
+      <div class="form-container">
+        <form [formGroup]="courseForm" (ngSubmit)="onSubmitAddCourse()">
+          <mat-form-field appearance="outline">
+            <mat-label>כותרת</mat-label>
+            <input matInput formControlName="title" required />
+            <mat-error *ngIf="courseForm.get('title')?.hasError('required')">כותרת נדרשת</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline">
+            <mat-label>תיאור</mat-label>
+            <textarea matInput formControlName="description" required></textarea>
+            <mat-error *ngIf="courseForm.get('description')?.hasError('required')">תיאור נדרש</mat-error>
+          </mat-form-field>
+  
+          <button mat-raised-button color="primary" type="submit" [disabled]="courseForm.invalid">שלח</button>
+        </form>
+      </div>
+    }
+  </div>
+  
+ -->
+
+
+
+
+
+
+
+<h2>Courses List: </h2>
+
+@if(allCourses$){
+<ul>
+    @for(currentCourse of (allCourses$|async);track $index){
+    <li>Title:{{currentCourse.title}} Description:{{currentCourse.description}} Teacher:{{currentCourse.teacherId}}
+
+        @for(lesson of currentCourse.lessons;track $index){
+  <li> Title:{{lesson.title}} Content:{{lesson.content}}</li>
+  <button (click)="setIsUpdateLesson(lesson)">Update Lesson</button>
+  <button (click)="deleteLesson(currentCourse.id,lesson.id)">Delete Lesson</button>
+  @if(isUpdateLesson&&idCurrentLesson==lesson.id){
+      <form [formGroup]="lessonForm" (ngSubmit)="onSubmitLesonUpdate()">
+        <label for="title">title</label>
+        <input id="title" formControlName="title" required>
+        @if (course['title']&&course['title'].errors &&course['title'].touched) {
+        @if(course['title'].errors['required']) {
+        <div>Title is required</div>
+        }
+        @if(course["title"].errors["minlength"]) {
+        <div>Title must be at least 4 characters</div>
+        }
+        @if(course["title"].errors["maxlength"]) {
+        <div>Title must be at most 8 characters</div>
+        }
+        }
+    
+        <label for="content">content:</label>
+        <input id="content" formControlName="content" required >
+        @if (course['content']&&course['content'].errors &&course['content'].touched) {
+        @if(course['content'].errors["required"]) {
+        <div>Description is required</div>
+        }
+        @if(course["content"].errors["minlength"]) {
+        <div>Description must be at least 15 characters</div>
+        }
+        }
+        <button type="submit" [disabled]="lessonForm.invalid">Submit</button>
+
+      </form>
+  }
+}
+    </li>
+    <button (click)="deleteCourse(currentCourse.id)">Delete</button>
+    <button (click)="setIsUpdate(currentCourse)">Update</button>
+    <button (click)="setIsAddLesson(currentCourse.id)">Add Lesson</button>
+     @if(isAddLesson&&idCurrentCourse===currentCourse.id){
+        <form [formGroup]="lessonForm" (ngSubmit)="onSubmitAddLesson()">
+            <label for="title">title</label>
+            <input id="title" formControlName="title" required>
+            @if (course['title']&&course['title'].errors &&course['title'].touched) {
+            @if(course['title'].errors['required']) {
+            <div>Title is required</div>
+            }
+            @if(course["title"].errors["minlength"]) {
+            <div>Title must be at least 4 characters</div>
+            }
+            @if(course["title"].errors["maxlength"]) {
+            <div>Title must be at most 8 characters</div>
+            }
+            }
+        
+            <label for="content">content:</label>
+            <input id="content" formControlName="content" required >
+            @if (course['content']&&course['content'].errors &&course['content'].touched) {
+            @if(course['content'].errors["required"]) {
+            <div>Description is required</div>
+            }
+            @if(course["content"].errors["minlength"]) {
+            <div>Description must be at least 15 characters</div>
+            }
+            }
+            <button type="submit" [disabled]="lessonForm.invalid">Submit</button>
+
+        </form>
+     }
+
+    @if(isUpdate &&currentCourse.id==idCurrentCourse){
+    <form [formGroup]="courseForm" (ngSubmit)="onSubmitUpdateCourse()">
+    <label for="title">title</label>
+    <input id="title" formControlName="title" required>
+    @if (course['title']&&course['title'].errors &&course['title'].touched) {
+            @if(course['title'].errors["required"]) {
+                <div>Title is required</div>
+            }
+            @if(course["title"].errors["minlength"]) {
+            <div>Title must be at least 4 characters</div>
+            }
+            @if(course["title"].errors["maxlength"]) {
+            <div>Title must be at most 8 characters</div>
+            
+        }
+    }
+
+    <label for="description">description:</label>
+    <input id="description" formControlName="description" required>
+    @if (course['description']&&course['description'].errors &&course['description'].touched) {
+        @if(course['description'].errors["required"]) {
+            <div>Description is required</div>
+        }
+        @if(course["description"].errors["minlength"]) {
+        <div>Description must be at least 15 characters</div>
+        }
+    }
+    <button type="submit" [disabled]="courseForm.invalid">Submit</button>
+        
+    </form>
+
+    }
+    }
+</ul>
+
+
+}
+@else {
+<div>no courses to show </div>
+}
+
+<button (click)="setIsAddCourse()">Add Course</button>
+@if(isAddCourse){
+<form [formGroup]="courseForm" (ngSubmit)="onSubmitAddCourse()">
+    <label for="title">title</label>
+    <input id="title" formControlName="title" required>
+    @if (course['title']&&course['title'].errors &&course['title'].touched) {
+            @if(course['title'].errors["required"]) {
+                <div>Title is required</div>
+            }
+            @if(course["title"].errors["minlength"]) {
+            <div>Title must be at least 4 characters</div>
+            }
+            @if(course["title"].errors["maxlength"]) {
+            <div>Title must be at most 8 characters</div>
+            
+        }
+    }
+
+    <label for="description">description:</label>
+    <input id="description" formControlName="description" required>
+    @if (course['description']&&course['description'].errors &&course['description'].touched) {
+        @if(course['description'].errors["required"]) {
+            <div>Description is required</div>
+        }
+        @if(course["description"].errors["minlength"]) {
+        <div>Description must be at least 15 characters</div>
+        }
+    }
+    <button type="submit" [disabled]="courseForm.invalid">Submit</button>
+</form>
+}
+
+<!-- 
+<ng-template #courseFormTemplate>
+      <label for="title">title</label>
+    <input id="title" formControlName="title" required>
+    @if (course['title']&&course['title'].errors &&course['title'].touched) {
+            @if(course['title'].errors["required"]) {
+                <div>Title is required</div>
+            }
+            @if(course["title"].errors["minlength"]) {
+            <div>Title must be at least 4 characters</div>
+            }
+            @if(course["title"].errors["maxlength"]) {
+            <div>Title must be at most 8 characters</div>
+            
+        }
+    }
+
+    <label for="description">description:</label>
+    <input id="description" formControlName="description" required>
+    @if (course['description']&&course['description'].errors &&course['description'].touched) {
+        @if(course['description'].errors["required"]) {
+            <div>Description is required</div>
+        }
+        @if(course["description"].errors["minlength"]) {
+        <div>Description must be at least 15 characters</div>
+        }
+    }
+    <button type="submit" [disabled]="courseForm.invalid">Submit</button>
+  </ng-template> -->
+  <!-- <ng-template #lessonFormTemplate>
+
+    <label for="title">title</label>
+    <input id="title" formControlName="title" required>
+    @if (course['title']&&course['title'].errors &&course['title'].touched) {
+    @if(course['title'].errors['required']) {
+    <div>Title is required</div>
+    }
+    @if(course["title"].errors["minlength"]) {
+    <div>Title must be at least 4 characters</div>
+    }
+    @if(course["title"].errors["maxlength"]) {
+    <div>Title must be at most 8 characters</div>
+    }
+    }
+
+    <label for="content">content:</label>
+    <input id="content" formControlName="content" required >
+    @if (course['content']&&course['content'].errors &&course['content'].touched) {
+    @if(course['content'].errors["required"]) {
+    <div>Description is required</div>
+    }
+    @if(course["content"].errors["minlength"]) {
+    <div>Description must be at least 15 characters</div>
+    }
+    }
+    <button type="submit" [disabled]="lessonForm.invalid">Submit</button>
+  </ng-template> -->
+  <!-- <h2>Courses List: </h2>
+@if(allCourses$){
+<ul>
+    @for(currentCourse of (allCourses$|async);track $index){
+    <li>Title:{{currentCourse.title}} Description:{{currentCourse.description}} Teacher:{{currentCourse.teacherId}}
+
+        @for(lesson of currentCourse.lessons;track $index){
+  <li>Content:{{lesson.content}} Title:{{lesson.title}}</li>
+  <button (click)="setIsUpdateLesson(lesson)">Update Lesson</button>
+  <button (click)="deleteLesson(currentCourse.id,lesson.id)">Delete Lesson</button>
+  @if(isUpdateLesson&&idCurrentLesson==lesson.id){
+      <form [formGroup]="lessonForm" (ngSubmit)="onSubmitLesonUpdate()">
+          <label for="title">title</label>
+          <input id="title" formControlName="title" required>
+          @if (course['title']&&course['title'].errors &&course['title'].touched) {
+          @if(course['title'].errors['required']) {
+          <div>Title is required</div>
+          }
+          @if(course["title"].errors["minlength"]) {
+          <div>Title must be at least 4 characters</div>
+          }
+          @if(course["title"].errors["maxlength"]) {
+          <div>Title must be at most 8 characters</div>
+          }
+          }
+  
+          <label for="content">content:</label>
+          <input id="content" formControlName="content" required >
+          @if (course['content']&&course['content'].errors &&course['content'].touched) {
+          @if(course['content'].errors["required"]) {
+          <div>Description is required</div>
+          }
+          @if(course["content"].errors["minlength"]) {
+          <div>Description must be at least 15 characters</div>
+          }
+          }
+          <button type="submit" [disabled]="lessonForm.invalid">Submit</button>
+      </form>
+  }
+}
+    </li>
+     @if(role=='teacher'||role=='admin'){ 
+    <button (click)="deleteCourse(currentCourse.id)">Delete</button>
+    <button (click)="setIsUpdate(currentCourse)">Update</button>
+    <button (click)="setIsAddLesson(currentCourse.id)">Add Lesson</button>
+     @if(isAddLesson&&idCurrentLesson==currentCourse.id){
+        <form [formGroup]="lessonForm" (ngSubmit)="onSubmitAddLesson()">
+            <label for="title">title</label>
+            <input id="title" formControlName="title" required>
+            @if (course['title']&&course['title'].errors &&course['title'].touched) {
+            @if(course['title'].errors['required']) {
+            <div>Title is required</div>
+            }
+            @if(course["title"].errors["minlength"]) {
+            <div>Title must be at least 4 characters</div>
+            }
+            @if(course["title"].errors["maxlength"]) {
+            <div>Title must be at most 8 characters</div>
+            }
+            }
+            <label for="content">content:</label>
+            <input id="content" formControlName="content" required >
+            @if (course['content']&&course['content'].errors &&course['content'].touched) {
+            @if(course['content'].errors["required"]) {
+            <div>Description is required</div>
+            }
+            @if(course["content"].errors["minlength"]) {
+            <div>Description must be at least 15 characters</div>
+            }
+            }
+            <button type="submit" [disabled]="lessonForm.invalid">Submit</button>
+        </form>
+     }
+    @if(isUpdate &&currentCourse.id==idCurrentCourse){
+    <form [formGroup]="courseForm" (ngSubmit)="onSubmitUpdateCourse()">
+        <label for="title">title</label>
+        <input id="title" formControlName="title" required>
+        @if (course['title']&&course['title'].errors &&course['title'].touched) {
+        @if(course['title'].errors['required']) {
+        <div>Title is required</div>
+        }
+        @if(course["title"].errors["minlength"]) {
+        <div>Title must be at least 4 characters</div>
+        }
+        @if(course["title"].errors["maxlength"]) {
+        <div>Title must be at most 8 characters</div>
+        }
+        }
+
+        <label for="description">description:</label>
+        <input id="description" formControlName="description" required>
+        @if (course['description']&&course['description'].errors &&course['description'].touched) {
+        @if(course['description'].errors["required"]) {
+        <div>Description is required</div>
+        }
+        @if(course["description"].errors["minlength"]) {
+        <div>Description must be at least 15 characters</div>
+        }
+        }
+        <button type="submit" [disabled]="courseForm.invalid">Submit</button>
+    </form>
+
+    }
+    }
+    < } 
+</ul>
+
+
+}
+@else {
+<div>no courses </div>
+}
+<button (click)="setIsAddCourse()">Add Course</button>
+@if(isAddCourse){
+<form [formGroup]="courseForm" (ngSubmit)="onSubmitAddCourse()">
+    <label for="title">title</label>
+    <input id="title" formControlName="title" required>
+    @if (course['title']&&course['title'].errors &&course['title'].touched) {
+            @if(course['title'].errors["required"]) {
+                <div>Title is required</div>
+            }
+            @if(course["title"].errors["minlength"]) {
+            <div>Title must be at least 4 characters</div>
+            }
+            @if(course["title"].errors["maxlength"]) {
+            <div>Title must be at most 8 characters</div>
+            
+        }
+    }
+
+    <label for="description">description:</label>
+    <input id="description" formControlName="description" required>
+    @if (course['description']&&course['description'].errors &&course['description'].touched) {
+        @if(course['description'].errors["required"]) {
+            <div>Description is required</div>
+        }
+        @if(course["description"].errors["minlength"]) {
+        <div>Description must be at least 15 characters</div>
+        }
+    }
+    <button type="submit" [disabled]="courseForm.invalid">Submit</button>
+</form>
+} -->
