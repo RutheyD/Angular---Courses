@@ -1,1 +1,19 @@
-<p>courses-list works!</p>
+<div class="courses-container">
+
+  <mat-accordion>
+  @for(currentCourse of (allCourses$|async);track $index){
+  <mat-expansion-panel>
+      <mat-expansion-panel-header>
+          <mat-panel-title  style="display: flex; justify-content: space-between; width: 100%;">
+            <span> Course Name: </span>{{currentCourse.title}} 
+            <button mat-raised-button color="primary" class="any-button" (click)="addCourseToUser(currentCourse.id)">Add to your courses</button>
+            <button mat-raised-button color="primary" class="any-button" (click)="deleteCurrentCourse(currentCourse.id)">Delete current course</button>
+          </mat-panel-title>
+      </mat-expansion-panel-header>
+      {{currentCourse.description}} 
+      <div></div> 
+      <!-- <button mat-raised-button color="primary" class="any-button" (click)="currentCourseLesson(currentCourse.id)">Show course lessons</button> -->
+  </mat-expansion-panel>
+  }
+  </mat-accordion>
+  </div>

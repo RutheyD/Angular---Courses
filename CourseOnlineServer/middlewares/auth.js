@@ -15,6 +15,7 @@ module.exports = (db) => {
       req.userId = decoded.userId;
       req.userRole = decoded.role;
       req.userName=decoded.userName;
+
       next();
     } catch (err) {
       res.status(401).json({ message: 'Invalid token' });

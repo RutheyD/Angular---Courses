@@ -18,7 +18,7 @@ module.exports = (db) => {
         }
         const token = jwt.sign({ userId: userId, role: role }, 'secret');
         console.log('User registered successfully:', userId, token);
-        res.status(201).json({ message: 'User registered successfully', userId , token});
+        res.status(201).json({ message: 'User registered successfully', userId , token, role});
       });
     } catch (err) {
       res.status(500).json({ message: 'Error registering user' });
@@ -37,8 +37,8 @@ module.exports = (db) => {
         if (!isMatch) {
           return res.status(400).json({ message: 'Invalid credentials' });
         }
-        const token = jwt.sign({ userId: user.id, role: user.role }, 'secret');
-        res.status(200).json({ token, userId: user.id, role: user.role });
+        const token = jwt.sign({ userId: user.id,userName:user.name, role: user.role }, 'secret');
+        res.status(200).json({ token, userId: user.id,name:user.name, role: user.role });
       });
     } catch (err) {
       res.status(500).json({ message: 'Error logging in' });

@@ -10,19 +10,16 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class CoursesService {
   private courseSubject!: BehaviorSubject<Course[]>;
+  private myCourseSubject:BehaviorSubject<Course[]> = new BehaviorSubject<Course[]>([]);
+  myCourses$:Observable<Course[]>;
   allCourses$: Observable<Course[]> 
   constructor(private http: HttpClient) { 
     this.courseSubject = new BehaviorSubject<Course[]>([]);
     this.allCourses$ = this.courseSubject.asObservable();
+    this.myCourses$=this.myCourseSubject.asObservable();
+
  }
 
-  // getCourses() {
-  //   this.http.get<Course[]>('http://localhost:3000/api/courses').subscribe(
-  //     data => {
-  //       this.courseSubject.next(data);
-        
-  //     })
-  // }
   getCourses() {
     this.http.get<Course[]>('http://localhost:3000/api/courses').subscribe(
       data => {
@@ -34,19 +31,7 @@ export class CoursesService {
       }
     );
   }
-  // getLessonsByCourse(courseId: number) {
-  //   this.http.get<Lesson[]>(`http://localhost:3000/api/courses/${courseId}/lessons`).subscribe({
-  //     next: (lessons) => {
-  //       this.courseSubject.subscribe(courses => {
-  //         const courseToUpdate = courses.find(course => course.id === courseId);
-  //         if (courseToUpdate) {
-  //           courseToUpdate.lessons = lessons;
-  //           this.courseSubject.next([...courses]);
-  //         }
-  //       })
-  //     }
-  //   })
-  // }
+  
   getLessonsByCourse(courseId: number) {
     this.http.get<Lesson[]>(`http://localhost:3000/api/courses/${courseId}/lessons`).subscribe({
       next: (lessons) => {
@@ -150,6 +135,52 @@ export class CoursesService {
       console.error('שגיאה בפענוח ה-Token:', error)
       return -1
     }
+  }
+  addCourseToUser(courseId:number){
+    const userId=this.getUserIdByToken()
+    this.http.post(`http://localhost:3000/api/courses/${courseId}/enroll`,{userId}).subscribe({
+      next:(response)=>{
+        this.getCourses();
+      },error:(e)=>{
+
+      }
+    })
+
+  }
+  deleteCurrentCourseForUser(courseId:number){
+    const userId=this.getUserIdByToken()
+    this.http.delete(`http://localhost:3000/api/courses/${courseId}/unenroll`,{body:{userId}}).subscribe({
+      next:(response)=>{
+        this.getCourses();
+      },error:(e)=>{
+    
+      }
+    })
+  }
+  getLessonsToMyCourse(courseId:number){
+    this.http.get<Lesson[]>(`http://localhost:3000/api/courses/${courseId}/lessons`).subscribe({
+      next: (lessons) => {
+        const courses = this.myCourseSubject.getValue();
+        const courseToUpdate = courses.find(course => course.id === courseId);
+        if (courseToUpdate) {
+          courseToUpdate.lessons = lessons;
+          this.myCourseSubject.next([...courses]);
+        }
+      }
+    });
+  }
+  getMyCourses(){
+    const studentId=this.getUserIdByToken()
+  this.http.get<Course[]>(`http://localhost:3000/api/courses/student/${studentId}`).subscribe({
+    next:(data)=>{
+      data.forEach(course=>{
+        this.getLessonsToMyCourse(course.id)
+          })
+this.myCourseSubject.next(data)
+    },error:(e)=>{
+      console.error('Failed to fetch my courses', e);
+    }
+  })
   }
   //   getCourses(): Observable<any>{
   //     return this.http.get<Course[]>('http://localhost:3000/api/courses')

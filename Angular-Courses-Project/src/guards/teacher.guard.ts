@@ -1,8 +1,13 @@
-import { CanActivateFn } from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
+import { CoursesService } from '../services/courses.service';
+import { inject } from '@angular/core';
 
 export const teacherGuard: CanActivateFn = (route, state) => {
 
-  return localStorage.getItem('role')=='teacher' || localStorage.getItem('role')=='admin'
 
-
+  const service=inject(CoursesService);
+  const status=service.getRoleByToken()
+  
+   return status==='admin'||status==='teacher'
+  
 };

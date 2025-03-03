@@ -16,9 +16,9 @@ export const routes: Routes = [
    {path:'homePage',component:HomePageComponent,canActivate:[authGuard]},
     {path:'login',component:LoginComponent},
    {path:'register',component:RegisterComponent},
-    {path:'teacher',component:CoursesComponent,canActivate:[authGuard/*,teacherGuard*/]},
+    {path:'teacher',component:CoursesComponent,canActivate:[authGuard,teacherGuard]},
     {path:'courses',component:CoursesListComponent,canActivate:[authGuard]},
-    {path:'courses+lessons',component:MyCoursesComponent,canActivate:[authGuard]},
+    {path:'courses_lessons',component:MyCoursesComponent,canActivate:[authGuard]},
 
     
 ];

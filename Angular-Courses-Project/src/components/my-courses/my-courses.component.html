@@ -1,1 +1,23 @@
-<p>my-courses works!</p>
+<div class="courses-container">
+
+    <mat-accordion>
+        @for(currentCourse of (myCourse$|async);track $index){
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title style="display: flex; justify-content: space-between; width: 100%;">
+                    <span> Course Name: </span>{{currentCourse.title}}
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            {{currentCourse.description}}
+            <div></div>
+            <mat-list>
+                @for(currenLesson of currentCourse.lessons;track $index){
+                <!-- <li> --><mat-list-item>
+                    -{{currenLesson.title}}--- {{currenLesson.content}}
+                </mat-list-item>
+                }
+            </mat-list>
+        </mat-expansion-panel>
+        }
+    </mat-accordion>
+</div>

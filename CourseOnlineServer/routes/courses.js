@@ -27,6 +27,24 @@ module.exports = (db) => {
     });
   });
 
+   // Get courses by student ID
+   router.get('/student/:studentId', checkAuth, (req, res) => {
+    const { studentId } = req.params;
+    db.all(
+      'SELECT courses.* FROM courses ' +
+      'INNER JOIN student_courses ON courses.id = student_courses.courseId ' +
+      'WHERE student_courses.userId = ?',
+      [studentId],
+      (err, rows) => {
+        if (err) {
+          console.error('Error fetching student courses:', err);
+          return res.status(500).json({ message: 'Error fetching student courses' });
+        }
+        res.status(200).json(rows);
+      }
+    );
+  });
+
   // Create new course (Teacher only)
   router.post('/', checkAuth, checkTeacher, async (req, res) => {
     const { title, description } = req.body;
@@ -78,6 +96,27 @@ module.exports = (db) => {
       }
     );
   });
+
+   // Remove student from course
+   router.delete('/:courseId/unenroll', checkAuth, (req, res) => {
+    const { courseId } = req.params;
+    const { userId } = req.body;
+    db.run(
+      'DELETE FROM student_courses WHERE userId = ? AND courseId = ?',
+      [userId, courseId],
+      function (err) {
+        if (err) {
+          console.error('Error unenrolling student from course:', err);
+          return res.status(500).json({ message: 'Error unenrolling student from course' });
+        }
+        if (this.changes === 0) {
+          return res.status(404).json({ message: 'Student not found in course' });
+        }
+        res.status(200).json({ message: 'Student unenrolled from course successfully' });
+      }
+    );
+  });
+
 
   return router;
 };
