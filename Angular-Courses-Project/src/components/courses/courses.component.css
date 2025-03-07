@@ -1,16 +1,55 @@
-/* mat-list-item {
-    margin-bottom: 16px;
-    padding: 16px;
-    background-color: #f5f5f5;
-    border-radius: 8px;
-  }
-  
-  mat-form-field {
-    display: block;
-    margin-bottom: 16px;
-  }
-  
-  button[mat-button] {
-    margin-right: 8px;
-  }
-   */
+mat-list-item {
+  margin-bottom: 16px;
+  padding: 16px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+}
+
+mat-form-field {
+  display: block;
+  margin-bottom: 16px;
+}
+.courses-lessons{
+  display: flex;
+justify-content: center;  
+width: 70%;
+}
+
+.any-button{
+  background-color:  #d76d77; 
+color: white; /* Custom text color */
+border-radius: 8px; /* Custom border radius */
+padding: 10px 22px; /* Custom padding */
+font-size: 16px; /* Custom font size */
+border: none; /* Remove default border */
+transition: background-color 0.3s; 
+height: 30px;
+margin: 8px;
+}
+.register-form {
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh; /* גובה מלא של המסך */
+}
+
+mat-card {
+width: 300px; /* רוחב קבוע */
+text-align: center; /* מרכז את הטקסט */
+
+}
+
+.center-title {
+text-align: center; /* מרכז את הכותרת */
+}
+
+.center-actions {
+display: flex;
+justify-content: center; /* מרכז את הכפתור */
+}
+.container {
+display: flex;
+justify-content: flex-end; /* Aligns the form to the right */
+}
+
+

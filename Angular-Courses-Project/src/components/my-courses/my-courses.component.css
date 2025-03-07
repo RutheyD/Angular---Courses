@@ -1,0 +1,65 @@
+mat-list-item {
+    margin-bottom: 16px;
+    padding: 16px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+  }
+  
+  mat-form-field {
+    display: block;
+    margin-bottom: 16px;
+  }
+  .courses-lessons{
+    display: flex;
+justify-content: center;  
+  width: 70%;
+  }
+  mat-panel-title{
+    display: flex; 
+    justify-content: space-between;
+     width: 80%;
+  }
+.any-button{
+    background-color: #d76d77; 
+    color: white; 
+  border-radius: 8px; 
+  padding: 10px 22px; 
+  font-size: 16px;
+  border: none;
+  transition: background-color 0.3s; 
+  height: 28px;
+  margin: 8px;
+}
+
+
+mat-card {
+  width: 300px; 
+  text-align: center; 
+}
+
+.center-title {
+  text-align: center; 
+}
+
+.center-actions {
+  display: flex;
+  justify-content: center; 
+}
+.container {
+  display: flex;
+}
+.courses-container {
+    display: flex;
+    justify-content: center; 
+    width: 100%; 
+    margin-top: 40px; 
+  }
+  mat-accordion {
+    width: 60%; 
+  }
+  mat-expansion-panel {
+    margin-bottom: 15px;
+  }
+  span{
+    font-weight: bold;
+  }

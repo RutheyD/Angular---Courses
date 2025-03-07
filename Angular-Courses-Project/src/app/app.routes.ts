@@ -18,7 +18,7 @@ export const routes: Routes = [
    {path:'register',component:RegisterComponent},
     {path:'teacher',component:CoursesComponent,canActivate:[authGuard,teacherGuard]},
     {path:'courses',component:CoursesListComponent,canActivate:[authGuard]},
-    {path:'courses_lessons',component:MyCoursesComponent,canActivate:[authGuard]},
+    {path:'myCourses',component:MyCoursesComponent,canActivate:[authGuard]},
 
     
 ];

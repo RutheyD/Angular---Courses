@@ -5,15 +5,16 @@
         <mat-expansion-panel>
             <mat-expansion-panel-header>
                 <mat-panel-title style="display: flex; justify-content: space-between; width: 100%;">
-                    <span> Course Name: </span>{{currentCourse.title}}
+                <span> Course Name: </span>{{currentCourse.title}}
                 </mat-panel-title>
+          <button mat-raised-button color="primary" class="any-button" (click)="deleteCurrentCourse(currentCourse.id)">Delete current course</button>
+
             </mat-expansion-panel-header>
-            {{currentCourse.description}}
-            <div></div>
+            {{currentCourse.description}} 
             <mat-list>
                 @for(currenLesson of currentCourse.lessons;track $index){
-                <!-- <li> --><mat-list-item>
-                    -{{currenLesson.title}}--- {{currenLesson.content}}
+               <mat-list-item>
+                    * {{currenLesson.title}} --- {{currenLesson.content}}
                 </mat-list-item>
                 }
             </mat-list>

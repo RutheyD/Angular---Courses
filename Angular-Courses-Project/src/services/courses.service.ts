@@ -25,7 +25,6 @@ export class CoursesService {
       data => {
         this.courseSubject.next(data);
         data.forEach(course => {
-          // שולח קריאה כדי להוריד את השיעורים עבור כל קורס
           this.getLessonsByCourse(course.id);
         });
       }
@@ -182,60 +181,5 @@ this.myCourseSubject.next(data)
     }
   })
   }
-  //   getCourses(): Observable<any>{
-  //     return this.http.get<Course[]>('http://localhost:3000/api/courses')
-  //   }
-  //   getLessonsByCourse(courseId:number): Observable<any>{
-  //     console.log('in lesson service ');
-  //    return this.http.get<Lesson[]>(`http://localhost:3000/api/courses/${courseId}/lessons`)
-  //   }
-  //   addNewCourse(course:Course):Observable<any>{
-  //     return this.http.post<any>('http://localhost:3000/api/courses',course)
-  //   }
-  //   updateCourse(course:Course){
-  //     return this.http.put(`http://localhost:3000/api/courses/${course.id}`,course);
-  //   }
-  //   deleteCourse(courseId:number){
-  //     return this.http.delete(`http://localhost:3000/api/courses/${courseId}`);
-  //   }
-  //   deleteLessonsByCourseId(courseId:number){
-  //     return this.http.delete(`http://localhost:3000/api/courses/${courseId}/lessons`);
-  //   }
-  //   deleteLesson(courseId:number,lessonId:number){
-  //     return this.http.delete(`http://localhost:3000/api/courses/${courseId}/lessons/${lessonId}`);
-  //   }
-  //   addLesson(lesson:Lesson){
-  // return this.http.post<Lesson>(`http://localhost:3000/api/courses/${lesson.courseId}/lessons`,lesson);
-  //   }
-  //   updateLesson(lesson:Lesson){
-  //     return this.http.put(`http://localhost:3000/api/courses/${lesson.courseId}/lessons/${lesson.id}`,lesson)
-  //   }
-  //   getRoleByToken():string{
-  //     const token = sessionStorage.getItem('token');
-  //       if (!token) return ''
-  //       try {
-  //         const decodedToken: any = jwtDecode(token)
-  //         // console.log(decodedToken)
-  //         // console.log(decodedToken.role);
-  //         return decodedToken.role
-  //       }
-  //       catch (error) {
-  //         console.error('שגיאה בפענוח ה-Token:', error)
-  //         return ''
-  //       }
-  //   }
-  //   getUserIdByToken():number{
-  //     const token = sessionStorage.getItem('token');
-  //     if (!token) return -1
-  //     try {
-  //       const decodedToken: any = jwtDecode(token)
-  //       // console.log(decodedToken)
-  //       // console.log(decodedToken.userId);
-  //       return decodedToken.userId
-  //     }
-  //     catch (error) {
-  //       console.error('שגיאה בפענוח ה-Token:', error)
-  //       return -1
-  //     }
-  //   }
+
 }

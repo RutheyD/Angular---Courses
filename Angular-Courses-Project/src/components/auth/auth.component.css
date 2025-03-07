@@ -1,21 +1,4 @@
-/* .auth-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 70vh;
-  }
-  
-  mat-card {
-    text-align: center;
-    padding: 20px;
-    width: 300px;
-  }
-  mat-card-actions {
-    display: flex;
-    justify-content: space-between;
-  }
-  */
-  /* Centering the authentication card */
+
 .auth-container {
     display: flex;
     justify-content: center;
